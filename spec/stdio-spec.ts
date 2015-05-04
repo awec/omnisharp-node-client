@@ -1,6 +1,8 @@
 import {expect} from 'chai';
 import {Driver, DriverState} from "../lib/omnisharp-client";
 import Stdio = require("../lib/drivers/stdio");
+import {join} from "path";
+
 var isRunning = require('is-running');
 
 declare var xdescribe: Function;
@@ -8,14 +10,14 @@ declare var xdescribe: Function;
 describe("Omnisharp Local - Stdio", function() {
     it("must construct", () => {
         new Stdio({
-            projectPath: process.cwd()
+            projectPath: join(__dirname, "fixture/ConsoleApplication")
         });
     });
 
     it("must construct with a specific driver", () => {
         new Stdio({
             driver: Driver.Stdio,
-            projectPath: process.cwd()
+            projectPath: join(__dirname, "fixture/ConsoleApplication")
         });
     });
 
@@ -27,7 +29,7 @@ describe("Omnisharp Local - Stdio", function() {
         before(() => {
             server = new Stdio({
                 driver: Driver.Stdio,
-                projectPath: process.cwd()
+                projectPath: join(__dirname, "fixture/ConsoleApplication")
             });
         })
 
@@ -59,7 +61,7 @@ describe("Omnisharp Local - Stdio", function() {
             var pid;
             var newServer = new Stdio({
                 driver: Driver.Stdio,
-                projectPath: process.cwd()
+                projectPath: join(__dirname, "fixture/ConsoleApplication")
             });
 
             server.connect({});
@@ -85,7 +87,7 @@ describe("Omnisharp Local - Stdio", function() {
         it('should implement the interface', function(done) {
             var server = new Stdio({
                 driver: Driver.Stdio,
-                projectPath: process.cwd()
+                projectPath: join(__dirname, "fixture/ConsoleApplication")
             });
 
             server.connect({});

@@ -43,7 +43,7 @@ class StdioDriver implements IDriver {
 
         this._connectionStream.onNext(DriverState.Connecting);
 
-        var serverArguments: any[] = [join(__dirname, "../stdio/child.js"), "--projectPath", findProject(projectPath), "--serverPath", this._serverPath];
+        var serverArguments: any[] = [join(__dirname, "../stdio/child.js"), "--serverPath", this._serverPath, "--projectPath", findProject(projectPath)];
         this._process = spawn(process.execPath, serverArguments, { env: { ATOM_SHELL_INTERNAL_RUN_AS_NODE: '1' } });
         this._process.stderr.on('data', function(data) { console.log(data.toString()) });
         this._process.stderr.on('data', (data) => this.serverErr(data));

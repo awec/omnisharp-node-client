@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import {OmnisharpClient, Driver, DriverState} from "../lib/omnisharp-client";
+import {join} from "path";
 
 declare var xdescribe: Function;
 
@@ -7,7 +8,7 @@ describe("Commands", function() {
     var server: OmnisharpClient;
     beforeEach(function() {
         server = new OmnisharpClient({
-            projectPath: process.cwd()
+            projectPath: join(__dirname, "fixture/ConsoleApplication")
         });
     });
 
