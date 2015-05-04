@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import {Driver, DriverState} from "../lib/omnisharp-client";
 import Stdio = require("../lib/drivers/stdio");
+var isRunning = require('is-running');
 
 declare var xdescribe: Function;
 
@@ -52,6 +53,30 @@ describe("Omnisharp Local - Stdio", function() {
             });
 
             server.disconnect();
+        });
+
+        it("must kill the process", function(done) {
+            var pid;
+            var newServer = new Stdio({
+                driver: Driver.Stdio,
+                projectPath: process.cwd()
+            });
+
+            server.connect({});
+
+            var sub = server.state.subscribe(state => {
+                sub.dispose();
+                pid = server.id;
+                newServer.disconnect();
+            });
+
+            var sub2 = newServer.state.subscribe(state => {
+                expect(newServer.currentState).to.be.eq(DriverState.Disconnected);
+                sub2.dispose();
+                expect(isRunning(+pid)).to.be.false;
+                done();
+            });
+
         });
     });
 

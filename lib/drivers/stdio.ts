@@ -5,7 +5,7 @@ import * as readline from "readline";
 import {Observable, Observer, Subject, AsyncSubject} from "rx";
 var omnisharpReleaseLocation = require('omnisharp-server-roslyn-binaries');
 // TODO: Move into omnisharp-server-roslyn-binaries?
-import {resolve} from 'path';
+import {resolve, join} from 'path';
 import {findProject} from "../project-finder";
 
 class StdioDriver implements IDriver {
@@ -24,7 +24,7 @@ class StdioDriver implements IDriver {
         this._connectionStream.subscribe(state => this.currentState = state);
     }
 
-    public get serverPath() { return this._serverPath ; }
+    public get serverPath() { return this._serverPath; }
     public get projectPath() { return this._projectPath; }
 
     private _commandStream = new Subject<OmniSharp.Stdio.Protocol.ResponsePacket>();
@@ -43,8 +43,8 @@ class StdioDriver implements IDriver {
 
         this._connectionStream.onNext(DriverState.Connecting);
 
-        var serverArguments: any[] = ["--stdio", "-s", findProject(projectPath), "--hostPID", process.pid];
-        this._process = spawn(this._serverPath, serverArguments);
+        var serverArguments: any[] = [join(__dirname, "../stdio/child.js"), "--projectPath", findProject(projectPath), "--serverPath", this._serverPath];
+        this._process = spawn(process.execPath, serverArguments, { env: { ATOM_SHELL_INTERNAL_RUN_AS_NODE: '1' } });
         this._process.stderr.on('data', function(data) { console.log(data.toString()) });
         this._process.stderr.on('data', (data) => this.serverErr(data));
 
@@ -81,14 +81,11 @@ class StdioDriver implements IDriver {
     }
 
     public disconnect() {
-        this._connectionStream.onNext(DriverState.Disconnected);
         if (this._process != null) {
             this._process.kill("SIGTERM");
-            if (process.platform === "win32") {
-                exec("taskkill", ["/PID", this._process.pid.toString(), '/T', '/F']);
-            }
         }
         this._process = null;
+        this._connectionStream.onNext(DriverState.Disconnected);
     }
 
     public request<TRequest, TResponse>(command: string, request?: TRequest): Rx.Observable<TResponse> {
