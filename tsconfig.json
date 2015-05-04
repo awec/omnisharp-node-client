@@ -22,6 +22,7 @@
         "./lib/omnisharp-client.ts",
         "./lib/project-finder.ts",
         "./lib/stdio/child.ts",
+        "./omnisharp-server.d.ts",
         "./spec/omnisharp-client-commands.ts",
         "./spec/omnisharp-client-spec.ts",
         "./spec/stdio-spec.ts",

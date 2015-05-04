@@ -7,14 +7,14 @@ declare var xdescribe: Function;
 describe("Omnisharp Server", function() {
     it("must construct", () => {
         new OmnisharpClient({
-            projectPath: join(__dirname, "fixture/ConsoleApplication")
+            projectPath: join(__dirname, "fixture/ConsoleApplication/")
         });
     });
 
     it("must construct with a specific driver", () => {
         new OmnisharpClient({
             driver: Driver.Stdio,
-            projectPath: join(__dirname, "fixture/ConsoleApplication")
+            projectPath: join(__dirname, "fixture/ConsoleApplication/")
         });
     });
 
@@ -26,7 +26,7 @@ describe("Omnisharp Server", function() {
         before((done) => {
             server = new OmnisharpClient({
                 driver: Driver.Stdio,
-                projectPath: join(__dirname, "fixture/ConsoleApplication")
+                projectPath: join(__dirname, "fixture/ConsoleApplication/")
             });
 
             server.connect();

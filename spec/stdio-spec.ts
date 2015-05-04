@@ -10,14 +10,14 @@ declare var xdescribe: Function;
 describe("Omnisharp Local - Stdio", function() {
     it("must construct", () => {
         new Stdio({
-            projectPath: join(__dirname, "fixture/ConsoleApplication")
+            projectPath: join(__dirname, "fixture/ConsoleApplication/")
         });
     });
 
     it("must construct with a specific driver", () => {
         new Stdio({
             driver: Driver.Stdio,
-            projectPath: join(__dirname, "fixture/ConsoleApplication")
+            projectPath: join(__dirname, "fixture/ConsoleApplication/")
         });
     });
 
@@ -29,7 +29,7 @@ describe("Omnisharp Local - Stdio", function() {
         before(() => {
             server = new Stdio({
                 driver: Driver.Stdio,
-                projectPath: join(__dirname, "fixture/ConsoleApplication")
+                projectPath: join(__dirname, "fixture/ConsoleApplication/")
             });
         })
 
@@ -61,22 +61,24 @@ describe("Omnisharp Local - Stdio", function() {
             var pid;
             var newServer = new Stdio({
                 driver: Driver.Stdio,
-                projectPath: join(__dirname, "fixture/ConsoleApplication")
+                projectPath: join(__dirname, "fixture/ConsoleApplication/")
             });
 
             server.connect({});
 
             var sub = server.state.subscribe(state => {
                 sub.dispose();
-                pid = server.id;
+                pid = +(server.id);
                 newServer.disconnect();
             });
 
             var sub2 = newServer.state.subscribe(state => {
                 expect(newServer.currentState).to.be.eq(DriverState.Disconnected);
                 sub2.dispose();
-                expect(isRunning(+pid)).to.be.false;
-                done();
+                setTimeout(() => {
+                    expect(isRunning(pid)).to.be.false
+                    done();
+                }, 500);
             });
 
         });
@@ -87,7 +89,7 @@ describe("Omnisharp Local - Stdio", function() {
         it('should implement the interface', function(done) {
             var server = new Stdio({
                 driver: Driver.Stdio,
-                projectPath: join(__dirname, "fixture/ConsoleApplication")
+                projectPath: join(__dirname, "fixture/ConsoleApplication/")
             });
 
             server.connect({});
