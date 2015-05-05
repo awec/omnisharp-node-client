@@ -2,6 +2,7 @@ import {expect} from 'chai';
 import {Driver, DriverState} from "../lib/omnisharp-client";
 import Stdio = require("../lib/drivers/stdio");
 import {join} from "path";
+import {Observable} from "rx";
 
 var isRunning = require('is-running');
 
@@ -64,21 +65,19 @@ describe("Omnisharp Local - Stdio", function() {
                 projectPath: join(__dirname, "fixture/ConsoleApplication/")
             });
 
-            server.connect({});
+            newServer.connect({});
 
-            var sub = server.state.subscribe(state => {
-                sub.dispose();
-                pid = +(server.id);
-                newServer.disconnect();
-            });
-
-            var sub2 = newServer.state.subscribe(state => {
-                expect(newServer.currentState).to.be.eq(DriverState.Disconnected);
-                sub2.dispose();
-                setTimeout(() => {
+            var sub = newServer.state.subscribe(state => {
+                var sub2 = newServer.state.subscribe(state => {
+                    expect(newServer.currentState).to.be.eq(DriverState.Disconnected);
+                    sub2.dispose();
                     expect(isRunning(pid)).to.be.false
                     done();
-                }, 500);
+                });
+
+                sub.dispose();
+                pid = +(newServer.id);
+                newServer.disconnect();
             });
 
         });

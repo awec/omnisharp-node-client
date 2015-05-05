@@ -24,6 +24,7 @@ describe("Omnisharp Server", function() {
         var server: OmnisharpClient;
 
         before((done) => {
+            this.timeout(20000);
             server = new OmnisharpClient({
                 driver: Driver.Stdio,
                 projectPath: join(__dirname, "fixture/ConsoleApplication/")
