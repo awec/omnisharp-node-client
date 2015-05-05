@@ -49,6 +49,8 @@ class StdioDriver implements IDriver {
         this._process.stderr.on('data', function(data) { console.log(data.toString()) });
         this._process.stderr.on('data', (data) => this.serverErr(data));
 
+        this._process.stdout.on('data', (data) => console.log(data.toString()));
+
         var rl = readline.createInterface({
             input: this._process.stdout,
             output: undefined
