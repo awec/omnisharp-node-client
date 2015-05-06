@@ -11,14 +11,14 @@ declare var xdescribe: Function;
 describe("Omnisharp Local - Stdio", function() {
     it("must construct", () => {
         new Stdio({
-            projectPath: join(__dirname, "fixture/ConsoleApplication/")
+            projectPath: join(__dirname, "fixture/src/ConsoleApplication/")
         });
     });
 
     it("must construct with a specific driver", () => {
         new Stdio({
             driver: Driver.Stdio,
-            projectPath: join(__dirname, "fixture/ConsoleApplication/")
+            projectPath: join(__dirname, "fixture/src/ConsoleApplication/")
         });
     });
 
@@ -30,7 +30,7 @@ describe("Omnisharp Local - Stdio", function() {
         before(() => {
             server = new Stdio({
                 driver: Driver.Stdio,
-                projectPath: join(__dirname, "fixture/ConsoleApplication/")
+                projectPath: join(__dirname, "fixture/src/ConsoleApplication/")
             });
         })
 
@@ -62,7 +62,7 @@ describe("Omnisharp Local - Stdio", function() {
             var pid;
             var newServer = new Stdio({
                 driver: Driver.Stdio,
-                projectPath: join(__dirname, "fixture/ConsoleApplication/")
+                projectPath: join(__dirname, "fixture/src/ConsoleApplication/")
             });
 
             newServer.connect({});
@@ -88,7 +88,7 @@ describe("Omnisharp Local - Stdio", function() {
         it('should implement the interface', function(done) {
             var server = new Stdio({
                 driver: Driver.Stdio,
-                projectPath: join(__dirname, "fixture/ConsoleApplication/")
+                projectPath: join(__dirname, "fixture/src/ConsoleApplication/")
             });
 
             server.connect({});

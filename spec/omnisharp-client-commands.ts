@@ -8,7 +8,7 @@ describe("Commands", function() {
     var server: OmnisharpClient;
     beforeEach(function() {
         server = new OmnisharpClient({
-            projectPath: join(__dirname, "fixture/ConsoleApplication/")
+            projectPath: join(__dirname, "fixture/src/ConsoleApplication/")
         });
     });
 
